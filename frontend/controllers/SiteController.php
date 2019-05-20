@@ -156,9 +156,15 @@ class SiteController extends Controller
     {
         $form = new SignupForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            (new SignupService())->signup($form);
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+            try {
+                (new SignupService())->signup($form);
+                Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+
+                return $this->goHome();
+            } catch (\RuntimeException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
 
         return $this->render('signup', [
