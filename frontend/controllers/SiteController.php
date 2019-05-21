@@ -6,6 +6,7 @@ use frontend\forms\VerifyEmailForm;
 use frontend\services\contact\ContactService;
 use frontend\services\auth\PasswordResetService;
 use frontend\services\auth\SignupService;
+use frontend\services\verify\VerifyEmailService;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
@@ -26,6 +27,7 @@ class SiteController extends Controller
     private $passwordResetService;
     private $contactService;
     private $signupService;
+    private $verifyEmailService;
 
     public function __construct(
         $id,
@@ -33,12 +35,14 @@ class SiteController extends Controller
         PasswordResetService $passwordResetService,
         ContactService $contactService,
         SignupService $signupService,
+        VerifyEmailService $verifyEmailService,
         $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->passwordResetService = $passwordResetService;
         $this->contactService = $contactService;
         $this->signupService = $signupService;
+        $this->verifyEmailService = $verifyEmailService;
     }
 
     /**
@@ -263,15 +267,21 @@ class SiteController extends Controller
     public function actionVerifyEmail($token)
     {
         try {
-            $model = new VerifyEmailForm($token);
+            $this->verifyEmailService->validateToken($token);
         } catch (InvalidArgumentException $e) {
+            Yii::$app->errorHandler->logException($e);
             throw new BadRequestHttpException($e->getMessage());
         }
-        if ($user = $model->verifyEmail()) {
+
+        try {
+            $user = $this->verifyEmailService->verify($token);
             if (Yii::$app->user->login($user)) {
                 Yii::$app->session->setFlash('success', 'Your email has been confirmed!');
                 return $this->goHome();
             }
+        } catch (\DomainException $e) {
+            Yii::$app->errorHandler->logException($e);
+            Yii::$app->session->setFlash('error', $e->getMessage());
         }
 
         Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');

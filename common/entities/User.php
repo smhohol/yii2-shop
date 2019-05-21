@@ -236,4 +236,9 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->status === self::STATUS_ACTIVE;
     }
+
+    public function setActiveStatus(): void
+    {
+        $this->status = User::STATUS_ACTIVE;
+    }
 }
