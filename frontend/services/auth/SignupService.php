@@ -7,7 +7,7 @@ use Yii;
 
 class SignupService
 {
-    public function signup(SignupForm $form): User
+    public function signup(SignupForm $form): void
     {
         $user = User::signup(
             $form->username,
@@ -19,30 +19,18 @@ class SignupService
             throw new \RuntimeException('Saving error.');
         }
 
-        if (!$this->sendEmail($user)) {
-            throw new \RuntimeException('Sending confirmation email error.');
-        }
-
-        return $user;
-    }
-
-
-    /**
-     * Sends confirmation email to user
-     * @param User $user user model to with email should be send
-     * @return bool whether the email was sent
-     */
-    private function sendEmail($user)
-    {
-        return Yii::$app
+        $sent = Yii::$app
             ->mailer
             ->compose(
                 ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
                 ['user' => $user]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
             ->setTo($user->email)
             ->setSubject('Account registration at ' . Yii::$app->name)
             ->send();
+
+        if (!$sent) {
+            throw new \RuntimeException('Sending confirmation email error.');
+        }
     }
 }

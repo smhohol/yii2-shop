@@ -25,17 +25,20 @@ class SiteController extends Controller
 {
     private $passwordResetService;
     private $contactService;
+    private $signupService;
 
     public function __construct(
         $id,
         $module,
         PasswordResetService $passwordResetService,
         ContactService $contactService,
+        SignupService $signupService,
         $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->passwordResetService = $passwordResetService;
         $this->contactService = $contactService;
+        $this->signupService = $signupService;
     }
 
     /**
@@ -176,7 +179,7 @@ class SiteController extends Controller
         $form = new SignupForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
-                (new SignupService())->signup($form);
+                $this->signupService->signup($form);
                 Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
 
                 return $this->goHome();
