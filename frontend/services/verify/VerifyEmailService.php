@@ -3,10 +3,37 @@
 namespace frontend\services\verify;
 
 use common\entities\User;
+use Yii;
 use yii\base\InvalidArgumentException;
 
 class  VerifyEmailService
 {
+    public function resend($email)
+    {
+        $user = User::findOne([
+            'email' => $email,
+            'status' => User::STATUS_INACTIVE
+        ]);
+
+        if (!$user) {
+            throw new \DomainException('User is not found.');
+        }
+
+        $sent = Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
+                ['user' => $user]
+            )
+            ->setTo($email)
+            ->setSubject('Account registration at ' . Yii::$app->name)
+            ->send();
+
+        if (!$sent) {
+            throw new \RuntimeException('Sending error.');
+        }
+    }
+
     public function validateToken($token)
     {
         if (empty($token) || !is_string($token)) {

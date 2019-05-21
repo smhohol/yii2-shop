@@ -2,7 +2,6 @@
 namespace frontend\controllers;
 
 use frontend\forms\ResendVerificationEmailForm;
-use frontend\forms\VerifyEmailForm;
 use frontend\services\contact\ContactService;
 use frontend\services\auth\PasswordResetService;
 use frontend\services\auth\SignupService;
@@ -295,17 +294,20 @@ class SiteController extends Controller
      */
     public function actionResendVerificationEmail()
     {
-        $model = new ResendVerificationEmailForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
+        $form = new ResendVerificationEmailForm();
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $this->verifyEmailService->resend($form->email);
                 Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
                 return $this->goHome();
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
             }
-            Yii::$app->session->setFlash('error', 'Sorry, we are unable to resend verification email for the provided email address.');
         }
 
         return $this->render('resendVerificationEmail', [
-            'model' => $model
+            'model' => $form
         ]);
     }
 }
