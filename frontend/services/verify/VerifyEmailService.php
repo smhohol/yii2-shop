@@ -3,11 +3,21 @@
 namespace frontend\services\verify;
 
 use common\entities\User;
+use DomainException;
+use RuntimeException;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\mail\MailerInterface;
 
 class  VerifyEmailService
 {
+    private $mailer;
+
+    public function __construct(MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     public function resend($email)
     {
         $user = User::findOne([
@@ -16,11 +26,10 @@ class  VerifyEmailService
         ]);
 
         if (!$user) {
-            throw new \DomainException('User is not found.');
+            throw new DomainException('User is not found.');
         }
 
-        $sent = Yii::$app
-            ->mailer
+        $sent = $this->mailer
             ->compose(
                 ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
                 ['user' => $user]
@@ -30,7 +39,7 @@ class  VerifyEmailService
             ->send();
 
         if (!$sent) {
-            throw new \RuntimeException('Sending error.');
+            throw new RuntimeException('Sending error.');
         }
     }
 
@@ -49,13 +58,13 @@ class  VerifyEmailService
     {
         $user = User::findByVerificationToken($token);
         if (!$user) {
-            throw new \DomainException('User is not found.');
+            throw new DomainException('User is not found.');
         }
 
         $user->setActiveStatus();
 
         if (!$user->save()) {
-            throw new \RuntimeException('Saving error.');
+            throw new RuntimeException('Saving error.');
         }
 
         return $user;

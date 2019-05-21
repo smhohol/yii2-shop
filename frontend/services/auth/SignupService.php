@@ -3,10 +3,19 @@ namespace frontend\services\auth;
 
 use common\entities\User;
 use frontend\forms\SignupForm;
+use RuntimeException;
 use Yii;
+use yii\mail\MailerInterface;
 
 class SignupService
 {
+    private $mailer;
+
+    public function __construct(MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     public function signup(SignupForm $form): void
     {
         $user = User::signup(
@@ -16,11 +25,10 @@ class SignupService
         );
 
         if (!$user->save()) {
-            throw new \RuntimeException('Saving error.');
+            throw new RuntimeException('Saving error.');
         }
 
-        $sent = Yii::$app
-            ->mailer
+        $sent = $this->mailer
             ->compose(
                 ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
                 ['user' => $user]
@@ -30,7 +38,7 @@ class SignupService
             ->send();
 
         if (!$sent) {
-            throw new \RuntimeException('Sending confirmation email error.');
+            throw new RuntimeException('Sending confirmation email error.');
         }
     }
 }
