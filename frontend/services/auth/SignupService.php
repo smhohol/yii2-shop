@@ -2,18 +2,20 @@
 namespace frontend\services\auth;
 
 use common\entities\User;
+use common\repositories\UserRepository;
 use frontend\forms\SignupForm;
-use RuntimeException;
 use Yii;
 use yii\mail\MailerInterface;
 
 class SignupService
 {
     private $mailer;
+    private $users;
 
-    public function __construct(MailerInterface $mailer)
+    public function __construct(UserRepository $users, MailerInterface $mailer)
     {
         $this->mailer = $mailer;
+        $this->users = $users;
     }
 
     public function signup(SignupForm $form): void
@@ -24,21 +26,7 @@ class SignupService
             $form->password
         );
 
-        if (!$user->save()) {
-            throw new RuntimeException('Saving error.');
-        }
-
-        $sent = $this->mailer
-            ->compose(
-                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
-                ['user' => $user]
-            )
-            ->setTo($user->email)
-            ->setSubject('Account registration at ' . Yii::$app->name)
-            ->send();
-
-        if (!$sent) {
-            throw new RuntimeException('Sending confirmation email error.');
-        }
+        $this->users->save($user);
+        $this->users->sendingVerifyEmail($user, $this->mailer, $user->email, Yii::$app->name);
     }
 }

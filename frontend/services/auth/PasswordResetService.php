@@ -2,7 +2,8 @@
 namespace frontend\services\auth;
 
 use common\entities\User;
-use DomainException;
+use common\repositories\NotFoundException;
+use common\repositories\UserRepository;
 use frontend\forms\PasswordResetRequestForm;
 use frontend\forms\ResetPasswordForm;
 use RuntimeException;
@@ -13,10 +14,12 @@ use yii\mail\MailerInterface;
 class PasswordResetService
 {
     private $mailer;
+    private $users;
 
-    public function __construct(MailerInterface $mailer)
+    public function __construct(UserRepository $users, MailerInterface $mailer)
     {
         $this->mailer = $mailer;
+        $this->users = $users;
     }
 
     public function request(PasswordResetRequestForm $form): void
@@ -28,14 +31,12 @@ class PasswordResetService
         ]);
 
         if (!$user) {
-            throw new DomainException('User is not found.');
+            throw new NotFoundException('User is not found.');
         }
 
         $user->requestPasswordReset();
 
-        if (!$user->save()) {
-            throw new RuntimeException('Saving error.');
-        }
+        $this->users->save($user);
 
         $sent = $this->mailer
             ->compose(
@@ -66,11 +67,9 @@ class PasswordResetService
     {
         $user = User::findByPasswordResetToken($token);
         if (!$user) {
-            throw new DomainException('User is not found.');
+            throw new NotFoundException('User is not found.');
         }
         $user->resetPassword($form->password);
-        if (!$user->save()) {
-            throw new RuntimeException('Saving error.');
-        }
+        $this->users->save($user);
     }
 }

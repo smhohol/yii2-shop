@@ -3,8 +3,8 @@
 namespace frontend\services\verify;
 
 use common\entities\User;
-use DomainException;
-use RuntimeException;
+use common\repositories\NotFoundException;
+use common\repositories\UserRepository;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\mail\MailerInterface;
@@ -12,10 +12,12 @@ use yii\mail\MailerInterface;
 class  VerifyEmailService
 {
     private $mailer;
+    private $users;
 
-    public function __construct(MailerInterface $mailer)
+    public function __construct(UserRepository $users, MailerInterface $mailer)
     {
         $this->mailer = $mailer;
+        $this->users = $users;
     }
 
     public function resend($email)
@@ -26,21 +28,10 @@ class  VerifyEmailService
         ]);
 
         if (!$user) {
-            throw new DomainException('User is not found.');
+            throw new NotFoundException('User is not found.');
         }
 
-        $sent = $this->mailer
-            ->compose(
-                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
-                ['user' => $user]
-            )
-            ->setTo($email)
-            ->setSubject('Account registration at ' . Yii::$app->name)
-            ->send();
-
-        if (!$sent) {
-            throw new RuntimeException('Sending error.');
-        }
+        $this->users->sendingVerifyEmail($user, $this->mailer, $email, Yii::$app->name);
     }
 
     public function validateToken($token)
@@ -58,14 +49,11 @@ class  VerifyEmailService
     {
         $user = User::findByVerificationToken($token);
         if (!$user) {
-            throw new DomainException('User is not found.');
+            throw new NotFoundException('User is not found.');
         }
 
         $user->confirmEmailVerification();
-
-        if (!$user->save()) {
-            throw new RuntimeException('Saving error.');
-        }
+        $this->users->save($user);
 
         return $user;
     }
