@@ -34,4 +34,9 @@ class UserRepository {
             throw new RuntimeException('Sending confirmation email error.');
         }
     }
+
+    public function findByUsernameOrEmail($value): ?User
+    {
+        return User::find()->andWhere(['or', ['username' => $value], ['email' => $value]])->limit(1)->one();
+    }
 }
