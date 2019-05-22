@@ -1,6 +1,7 @@
 <?php
 namespace common\entities;
 
+use DomainException;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -36,7 +37,7 @@ class User extends ActiveRecord implements IdentityInterface
         $user->email = $email;
         $user->setPassword($password);
         $user->created_at = time();
-        $user->status = self::STATUS_ACTIVE;
+        $user->status = self::STATUS_INACTIVE;
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
@@ -46,7 +47,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function requestPasswordReset(): void
     {
         if (!empty($this->password_reset_token) && self::isPasswordResetTokenValid($this->password_reset_token)) {
-            throw new \DomainException('Password resetting is already requested.');
+            throw new DomainException('Password resetting is already requested.');
         }
         $this->generatePasswordResetToken();
     }
@@ -54,7 +55,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function resetPassword($password): void
     {
         if (empty($this->password_reset_token)) {
-            throw new \DomainException('Password resetting is not requested.');
+            throw new DomainException('Password resetting is not requested.');
         }
         $this->setPassword($password);
         $this->removePasswordResetToken();
@@ -222,14 +223,19 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
+    private function removePasswordResetToken()
+    {
+        $this->password_reset_token = null;
+    }
+
     private function generateEmailVerificationToken()
     {
         $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
-    private function removePasswordResetToken()
+    private function removeEmailVerificationToken()
     {
-        $this->password_reset_token = null;
+        $this->verification_token = null;
     }
 
     public function isActive(): bool
@@ -237,8 +243,13 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->status === self::STATUS_ACTIVE;
     }
 
-    public function setActiveStatus(): void
+    public function confirmEmailVerification(): void
     {
-        $this->status = User::STATUS_ACTIVE;
+        if ($this->isActive()) {
+            throw new DomainException('User is already active.');
+        }
+
+        $this->status = self::STATUS_ACTIVE;
+        $this->removeEmailVerificationToken();
     }
 }

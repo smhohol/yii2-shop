@@ -61,7 +61,7 @@ class  VerifyEmailService
             throw new DomainException('User is not found.');
         }
 
-        $user->setActiveStatus();
+        $user->confirmEmailVerification();
 
         if (!$user->save()) {
             throw new RuntimeException('Saving error.');
