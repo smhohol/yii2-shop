@@ -1,7 +1,7 @@
 <?php
 namespace shop\services\auth;
 
-use shop\entities\User;
+use shop\entities\user\User;
 use shop\repositories\NotFoundException;
 use shop\repositories\UserRepository;
 use shop\forms\auth\PasswordResetRequestForm;
@@ -31,7 +31,7 @@ class PasswordResetService
         ]);
 
         if (!$user) {
-            throw new NotFoundException('User is not found.');
+            throw new NotFoundException('user is not found.');
         }
 
         $user->requestPasswordReset();
@@ -67,7 +67,7 @@ class PasswordResetService
     {
         $user = User::findByPasswordResetToken($token);
         if (!$user) {
-            throw new NotFoundException('User is not found.');
+            throw new NotFoundException('user is not found.');
         }
         $user->resetPassword($form->password);
         $this->users->save($user);

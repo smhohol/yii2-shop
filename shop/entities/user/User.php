@@ -1,5 +1,5 @@
 <?php
-namespace shop\entities;
+namespace shop\entities\user;
 
 use DomainException;
 use Yii;
@@ -9,7 +9,7 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
- * User model
+ * user model
  *
  * @property integer $id
  * @property string $username
@@ -246,7 +246,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function confirmEmailVerification(): void
     {
         if ($this->isActive()) {
-            throw new DomainException('User is already active.');
+            throw new DomainException('user is already active.');
         }
 
         $this->status = self::STATUS_ACTIVE;

@@ -2,7 +2,7 @@
 namespace shop\tests\unit\entities\User;
 
 use Codeception\Test\Unit;
-use shop\entities\User;
+use shop\entities\user\User;
 
 class ConfirmSignupTest extends Unit
 {
@@ -25,7 +25,7 @@ class ConfirmSignupTest extends Unit
             'verification_token' => null,
         ]);
 
-        $this->expectExceptionMessage('User is already active.');
+        $this->expectExceptionMessage('user is already active.');
         $user->confirmEmailVerification();
     }
 }

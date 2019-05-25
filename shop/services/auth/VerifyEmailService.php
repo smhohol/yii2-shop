@@ -2,7 +2,7 @@
 
 namespace shop\services\auth;
 
-use shop\entities\User;
+use shop\entities\user\User;
 use shop\repositories\NotFoundException;
 use shop\repositories\UserRepository;
 use Yii;
@@ -28,7 +28,7 @@ class  VerifyEmailService
         ]);
 
         if (!$user) {
-            throw new NotFoundException('User is not found.');
+            throw new NotFoundException('user is not found.');
         }
 
         $this->users->sendingVerifyEmail($user, $this->mailer, $email, Yii::$app->name);
@@ -49,7 +49,7 @@ class  VerifyEmailService
     {
         $user = User::findByVerificationToken($token);
         if (!$user) {
-            throw new NotFoundException('User is not found.');
+            throw new NotFoundException('user is not found.');
         }
 
         $user->confirmEmailVerification();
