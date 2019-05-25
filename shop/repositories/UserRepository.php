@@ -23,7 +23,7 @@ class UserRepository {
     {
         $sent = $mailer
             ->compose(
-                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
+                ['html' => 'auth/signup/confirm-html', 'text' => 'auth/signup/confirm-text'],
                 ['user' => $user]
             )
             ->setTo($email)
