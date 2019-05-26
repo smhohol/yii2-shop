@@ -1,7 +1,7 @@
 <?php
 namespace shop\forms\auth;
 
-use shop\entities\user\User;
+use shop\entities\User\User;
 use yii\base\Model;
 
 /**

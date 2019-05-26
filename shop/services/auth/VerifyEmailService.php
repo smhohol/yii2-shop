@@ -2,7 +2,7 @@
 
 namespace shop\services\auth;
 
-use shop\entities\user\User;
+use shop\entities\User\User;
 use shop\repositories\NotFoundException;
 use shop\repositories\UserRepository;
 use Yii;
