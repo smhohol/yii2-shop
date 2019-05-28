@@ -4,6 +4,7 @@ namespace shop\services\manage;
 
 use shop\entities\User\User;
 use shop\forms\manage\User\UserCreateForm;
+use shop\forms\manage\User\UserEditForm;
 use shop\repositories\UserRepository;
 
 class UserManageService
@@ -25,5 +26,14 @@ class UserManageService
 
         $this->repository->save($user);
         return $user;
+    }
+
+    public function edit(User $user, UserEditForm $form): void
+    {
+        $user->edit(
+            $form->username,
+            $form->email
+        );
+        $this->repository->save($user);
     }
 }
