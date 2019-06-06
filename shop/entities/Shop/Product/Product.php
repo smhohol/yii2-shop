@@ -30,6 +30,7 @@ use yii\web\UploadedFile;
  * @property Value[] $values
  * @property Photo[] $photos
  * @property TagAssignment[] $tagAssignments
+ * @property RelatedAssignment[] $relatedAssignments
  */
 class Product extends ActiveRecord
 {
@@ -212,6 +213,32 @@ class Product extends ActiveRecord
         $this->tagAssignments = [];
     }
 
+    // Related products
+    public function assignRelatedProduct($id): void
+    {
+        $assignments = $this->relatedAssignments;
+        foreach ($assignments as $assignment) {
+            if ($assignment->isForProduct($id)) {
+                return;
+            }
+        }
+        $assignments[] = RelatedAssignment::create($id);
+        $this->relatedAssignments = $assignments;
+    }
+
+    public function revokeRelatedProduct($id): void
+    {
+        $assignments = $this->relatedAssignments;
+        foreach ($assignments as $i => $assignment) {
+            if ($assignment->isForProduct($id)) {
+                unset($assignments[$i]);
+                $this->relatedAssignments = $assignments;
+                return;
+            }
+        }
+        throw new DomainException('Assignment is not found.');
+    }
+
     ##########################
 
     public function getBrand(): ActiveQuery
@@ -244,6 +271,11 @@ class Product extends ActiveRecord
         return $this->hasMany(TagAssignment::class, ['product_id' => 'id']);
     }
 
+    public function getRelatedAssignments(): ActiveQuery
+    {
+        return $this->hasMany(RelatedAssignment::class, ['product_id' => 'id']);
+    }
+
     ##########################
     public static function tableName(): string
     {
@@ -256,7 +288,7 @@ class Product extends ActiveRecord
             MetaBehavior::class,
             [
                 'class' => SaveRelationsBehavior::class,
-                'relations' => ['categoryAssignments', 'values', 'photos', 'tagAssignments'],
+                'relations' => ['categoryAssignments', 'values', 'photos', 'tagAssignments', 'relatedAssignments'],
             ],
         ];
     }
