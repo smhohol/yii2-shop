@@ -32,6 +32,7 @@ use yii\web\UploadedFile;
  * @property TagAssignment[] $tagAssignments
  * @property RelatedAssignment[] $relatedAssignments
  * @property Modification[] $modifications
+ * @property Review[] $reviews
  */
 class Product extends ActiveRecord
 {
@@ -297,6 +298,80 @@ class Product extends ActiveRecord
         throw new DomainException('Modification is not found.');
     }
 
+    // Reviews
+    public function addReview($userId, $vote, $text): void
+    {
+        $reviews = $this->reviews;
+        $reviews[] = Review::create($userId, $vote, $text);
+        $this->updateReviews($reviews);
+    }
+
+    public function editReview($id, $vote, $text): void
+    {
+        $reviews = $this->reviews;
+        foreach ($reviews as $i => $review) {
+            if ($review->isIdEqualTo($id)) {
+                $review->edit($vote, $text);
+                $this->updateReviews($reviews);
+                return;
+            }
+        }
+        throw new DomainException('Review is not found.');
+    }
+
+    public function activateReview($id): void
+    {
+        $reviews = $this->reviews;
+        foreach ($reviews as $i => $review) {
+            if ($review->isIdEqualTo($id)) {
+                $review->activate();
+                $this->updateReviews($reviews);
+                return;
+            }
+        }
+        throw new DomainException('Review is not found.');
+    }
+
+    public function draftReview($id): void
+    {
+        $reviews = $this->reviews;
+        foreach ($reviews as $i => $review) {
+            if ($review->isIdEqualTo($id)) {
+                $review->draft();
+                $this->updateReviews($reviews);
+                return;
+            }
+        }
+        throw new DomainException('Review is not found.');
+    }
+
+    public function removeReview($id): void
+    {
+        $reviews = $this->reviews;
+        foreach ($reviews as $i => $review) {
+            if ($review->isIdEqualTo($id)) {
+                unset($reviews[$i]);
+                $this->updateReviews($reviews);
+                return;
+            }
+        }
+        throw new DomainException('Review is not found.');
+    }
+
+    private function updateReviews(array $reviews): void
+    {
+        $amount = 0;
+        $total = 0;
+        foreach ($reviews as $review) {
+            if ($review->isActive()) {
+                $amount++;
+                $total += $review->getRating();
+            }
+        }
+        $this->reviews = $reviews;
+        $this->rating = $amount ? $total / $amount : null;
+    }
+
     ##########################
 
     public function getBrand(): ActiveQuery
@@ -339,6 +414,11 @@ class Product extends ActiveRecord
         return $this->hasMany(Modification::class, ['product_id' => 'id']);
     }
 
+    public function getReviews(): ActiveQuery
+    {
+        return $this->hasMany(Review::class, ['product_id' => 'id']);
+    }
+
     ##########################
     public static function tableName(): string
     {
@@ -352,7 +432,7 @@ class Product extends ActiveRecord
             [
                 'class' => SaveRelationsBehavior::class,
                 'relations' => ['categoryAssignments', 'values', 'photos', 'tagAssignments',
-                    'relatedAssignments', 'modifications'],
+                    'relatedAssignments', 'modifications', 'reviews'],
             ],
         ];
     }
