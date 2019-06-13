@@ -22,6 +22,7 @@ use yii\web\UploadedFile;
  * @property integer $price_old
  * @property integer $price_new
  * @property integer $rating
+ * @property integer $main_photo_id
  *
  * @property Meta $meta
  * @property Brand $brand
@@ -190,6 +191,7 @@ class Product extends ActiveRecord
             $photo->setSort($i);
         }
         $this->photos = $photos;
+        $this->populateRelation('mainPhoto', reset($photos));
     }
 
     // Tags
@@ -414,6 +416,11 @@ class Product extends ActiveRecord
         return $this->hasMany(Review::class, ['product_id' => 'id']);
     }
 
+    public function getMainPhoto(): ActiveQuery
+    {
+        return $this->hasOne(Photo::class, ['id' => 'main_photo_id']);
+    }
+
     ##########################
     public static function tableName(): string
     {
@@ -437,5 +444,14 @@ class Product extends ActiveRecord
         return [
             self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
+    }
+
+    public function afterSave($insert, $changedAttributes): void
+    {
+        $related = $this->getRelatedRecords();
+        if (array_key_exists('mainPhoto', $related)) {
+            $this->updateAttributes(['main_photo_id' => $related['mainPhoto'] ? $related['mainPhoto']->id : null]);
+        }
+        parent::afterSave($insert, $changedAttributes);
     }
 }
