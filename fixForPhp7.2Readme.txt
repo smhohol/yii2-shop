@@ -1,0 +1,9 @@
+Then the vendor/masterexploder/phpthumb/src/PHPThumb/GD.php is used with php 7.2, the error is displayed
+"[PHP 7.2] sizeof(): Parameter must be an array or an object that implements Countable"
+
+Description of the problem - https://github.com/paypal/PayPal-PHP-SDK/issues/1014
+
+Fix by replacing vendor/masterexploder/phpthumb/src/PHPThumb/GD.php:59
+protected $options;
+on
+protected $options = array();
