@@ -109,7 +109,10 @@ class ProductManageService
         );
 
         $product->changeMainCategory($category->id);
+
         $product->revokeCategories();
+        $this->products->save($product);
+
         foreach ($form->categories->others as $otherId) {
             $category = $this->categories->get($otherId);
             $product->assignCategory($category->id);
@@ -120,6 +123,7 @@ class ProductManageService
         }
 
         $product->revokeTags();
+        $this->products->save($product);
 
         foreach ($form->tags->existing as $tagId) {
             $tag = $this->tags->get($tagId);
