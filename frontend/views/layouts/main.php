@@ -1,3 +1,16 @@
+<?php
+/* @var $this View */
+/* @var $content string */
+
+use frontend\assets\AppAsset;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\web\View;
+
+AppAsset::register($this);
+?>
+
+<?php $this->beginPage() ?>
 <!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <!--[if IE 8 ]><html dir="ltr" lang="ru" class="ie8"><![endif]-->
@@ -6,25 +19,17 @@
 <html dir="ltr" lang="ru">
 <!--<![endif]-->
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="<?= Yii::$app->charset ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Your Store</title>
-    <script type="text/javascript" src="/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js" charset="UTF-8"></script><base href="http://demo-opencart.ru/" />
-    <meta name="description" content="My Store" />
-    <script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
-    <link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
-    <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,300,700" rel="stylesheet" type="text/css" />
-    <link href="catalog/view/theme/default/stylesheet/stylesheet.css" rel="stylesheet">
-    <link href="catalog/view/javascript/jquery/swiper/css/swiper.min.css" type="text/css" rel="stylesheet" media="screen" />
-    <link href="catalog/view/javascript/jquery/swiper/css/opencart.css" type="text/css" rel="stylesheet" media="screen" />
-    <script src="catalog/view/javascript/jquery/swiper/js/swiper.jquery.js" type="text/javascript"></script>
-    <script src="catalog/view/javascript/common.js" type="text/javascript"></script>
-    <link href="http://demo-opencart.ru/image/catalog/cart.png" rel="icon" />
+    <?= Html::csrfMetaTags() ?>
+    <title><?= Html::encode($this->title) ?></title>
+    <link href="<?= Html::encode(Url::canonical()) ?>" rel="canonical"/>
+    <link href="<?= Yii::getAlias('@web/images/cart.png') ?>" rel="icon"/>
+    <?php $this->head() ?>
 </head>
 <body>
+<?php $this->beginBody() ?>
 <nav id="top">
     <div class="container"><div class="pull-left">
             <form action="http://demo-opencart.ru/index.php?route=common/currency/currency" method="post" enctype="multipart/form-data" id="form-currency">
@@ -52,14 +57,14 @@
                 <div class="btn-group">
                     <button class="btn btn-link dropdown-toggle" data-toggle="dropdown">
 
-                        <img src="catalog/language/ru-ru/ru-ru.png" alt="Русский" title="Русский">
+                        <img src="<?= Yii::getAlias('@web/images/ru-ru.png') ?>" alt="Русский" title="Русский">
                         <span class="hidden-xs hidden-sm hidden-md">Язык</span>&nbsp;<i class="fa fa-caret-down"></i></button>
                     <ul class="dropdown-menu">
                         <li>
-                            <button class="btn btn-link btn-block language-select" type="button" name="en-gb"><img src="catalog/language/en-gb/en-gb.png" alt="English" title="English" /> English</button>
+                            <button class="btn btn-link btn-block language-select" type="button" name="en-gb"><img src="<?= Yii::getAlias('@web/images/en-gb.png') ?>" alt="English" title="English" /> English</button>
                         </li>
                         <li>
-                            <button class="btn btn-link btn-block language-select" type="button" name="ru-ru"><img src="catalog/language/ru-ru/ru-ru.png" alt="Русский" title="Русский" /> Русский</button>
+                            <button class="btn btn-link btn-block language-select" type="button" name="ru-ru"><img src="<?= Yii::getAlias('@web/images/ru-ru.png') ?>" alt="Русский" title="Русский" /> Русский</button>
                         </li>
                     </ul>
                 </div>
@@ -201,20 +206,6 @@
                     <div class="swiper-button-prev"></div>
                 </div>
             </div>
-            <script type="text/javascript"><!--
-                $('#slideshow0').swiper({
-                    mode: 'horizontal',
-                    slidesPerView: 1,
-                    pagination: '.slideshow0',
-                    paginationClickable: true,
-                    nextButton: '.swiper-button-next',
-                    prevButton: '.swiper-button-prev',
-                    spaceBetween: 30,
-                    autoplay: 2500,
-                    autoplayDisableOnInteraction: true,
-                    loop: true
-                });
-                --></script>
             <h3>Рекомендуемые</h3>
             <div class="row">
                 <div class="product-layout col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -235,7 +226,7 @@
                         <div class="button-group">
                             <button type="button" onclick="cart.add('43');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">Купить</span></button>
                             <button type="button" data-toggle="tooltip" title="В закладки" onclick="wishlist.add('43');"><i class="fa fa-heart"></i></button>
-                            <button type="button" data-toggle="tooltip" title="В сравнение" onclick="compare.add('43');"><i class="fa fa-exchange"></i></button>
+                            <button type="button" data-toggle="tooltip" title="В сравнение" onclick="compare.add('43');"><i class="fa fa-clone"></i></button>
                         </div>
                     </div>
                 </div>
@@ -254,7 +245,7 @@
                         <div class="button-group">
                             <button type="button" onclick="cart.add('40');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">Купить</span></button>
                             <button type="button" data-toggle="tooltip" title="В закладки" onclick="wishlist.add('40');"><i class="fa fa-heart"></i></button>
-                            <button type="button" data-toggle="tooltip" title="В сравнение" onclick="compare.add('40');"><i class="fa fa-exchange"></i></button>
+                            <button type="button" data-toggle="tooltip" title="В сравнение" onclick="compare.add('40');"><i class="fa fa-clone"></i></button>
                         </div>
                     </div>
                 </div>
@@ -273,7 +264,7 @@
                         <div class="button-group">
                             <button type="button" onclick="cart.add('42');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">Купить</span></button>
                             <button type="button" data-toggle="tooltip" title="В закладки" onclick="wishlist.add('42');"><i class="fa fa-heart"></i></button>
-                            <button type="button" data-toggle="tooltip" title="В сравнение" onclick="compare.add('42');"><i class="fa fa-exchange"></i></button>
+                            <button type="button" data-toggle="tooltip" title="В сравнение" onclick="compare.add('42');"><i class="fa fa-clone"></i></button>
                         </div>
                     </div>
                 </div>
@@ -292,7 +283,7 @@
                         <div class="button-group">
                             <button type="button" onclick="cart.add('30');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">Купить</span></button>
                             <button type="button" data-toggle="tooltip" title="В закладки" onclick="wishlist.add('30');"><i class="fa fa-heart"></i></button>
-                            <button type="button" data-toggle="tooltip" title="В сравнение" onclick="compare.add('30');"><i class="fa fa-exchange"></i></button>
+                            <button type="button" data-toggle="tooltip" title="В сравнение" onclick="compare.add('30');"><i class="fa fa-clone"></i></button>
                         </div>
                     </div>
                 </div>
@@ -319,18 +310,6 @@
                     <div class="swiper-button-prev"></div>
                 </div>
             </div>
-            <script type="text/javascript"><!--
-                $('#carousel0').swiper({
-                    mode: 'horizontal',
-                    slidesPerView: 5,
-                    pagination: '.carousel0',
-                    paginationClickable: true,
-                    nextButton: '.swiper-button-next',
-                    prevButton: '.swiper-button-prev',
-                    autoplay: 2500,
-                    loop: true
-                });
-                --></script>
         </div>
     </div>
 </div>
@@ -377,8 +356,48 @@
         <p>Работает на <a href="https://www.opencart.ru">OpenCart</a><br /> Your Store &copy; 2019</p>
     </div>
 </footer>
-<!--
-OpenCart is open source software and you are free to remove the powered by OpenCart if you want, but its generally accepted practise to make a small donation.
-Please donate via PayPal to donate@opencart.com
-//-->
+<?php $this->endBody() ?>
+
+<script type="text/javascript"><!--
+    new Swiper('#slideshow0', {
+        spaceBetween: 30,
+        centeredSlides: true,
+        loop: true,
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: true,
+        },
+        pagination: {
+            el: '.slideshow0',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+--></script>
+
+<script type="text/javascript"><!--
+    new Swiper('#carousel0', {
+        spaceBetween: 30,
+        centeredSlides: true,
+        loop: true,
+        slidesPerView: 5,
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: true,
+        },
+        pagination: {
+            el: '.carousel0',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+--></script>
+
 </body></html>
+<?php $this->endPage() ?>
