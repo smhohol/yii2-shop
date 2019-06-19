@@ -93,7 +93,7 @@ AppAsset::register($this);
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
-                <div id="logo">          <h1><a href="http://demo-opencart.ru/index.php?route=common/home">Your Store</a></h1>
+                <div id="logo">          <h1><a href="<?= Url::home() ?>">Your Store</a></h1>
                 </div>
             </div>
             <div class="col-sm-5"><div id="search" class="input-group">
@@ -196,8 +196,8 @@ AppAsset::register($this);
     <div class="row">
         <div id="content" class="col-sm-12"><div class="swiper-viewport">
                 <div id="slideshow0" class="swiper-container">
-                    <div class="swiper-wrapper">       <div class="swiper-slide text-center"><a href="index.php?route=product/product&amp;path=57&amp;product_id=49"><img src="http://demo-opencart.ru/image/cache/catalog/demo/banners/iPhone6-1140x380.jpg" alt="iPhone 6" class="img-responsive" /></a></div>
-                        <div class="swiper-slide text-center"><img src="http://demo-opencart.ru/image/cache/catalog/demo/banners/MacBookAir-1140x380.jpg" alt="MacBookAir" class="img-responsive" /></div>
+                    <div class="swiper-wrapper">       <div class="swiper-slide text-center"><a href="index.php?route=product/product&amp;path=57&amp;product_id=49"><img src="http://static.trial.ru/cache/banners/iPhone6-1140x380.jpg" alt="iPhone 6" class="img-responsive" /></a></div>
+                        <div class="swiper-slide text-center"><img src="http://static.trial.ru/cache/banners/MacBookAir-1140x380.jpg" alt="MacBookAir" class="img-responsive" /></div>
                     </div>
                 </div>
                 <div class="swiper-pagination slideshow0"></div>
@@ -210,7 +210,7 @@ AppAsset::register($this);
             <div class="row">
                 <div class="product-layout col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="product-thumb transition">
-                        <div class="image"><a href="http://demo-opencart.ru/index.php?route=product/product&amp;product_id=43"><img src="http://demo-opencart.ru/image/cache/catalog/demo/macbook_1-200x200.jpg" alt="MacBook" title="MacBook" class="img-responsive" /></a></div>
+                        <div class="image"><a href="http://demo-opencart.ru/index.php?route=product/product&amp;product_id=43"><img src="http://static.trial.ru/cache/products/macbook_1-200x200.jpg" alt="MacBook" title="MacBook" class="img-responsive" /></a></div>
                         <div class="caption">
                             <h4><a href="http://demo-opencart.ru/index.php?route=product/product&amp;product_id=43">MacBook</a></h4>
                             <p>
@@ -232,7 +232,7 @@ AppAsset::register($this);
                 </div>
                 <div class="product-layout col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="product-thumb transition">
-                        <div class="image"><a href="http://demo-opencart.ru/index.php?route=product/product&amp;product_id=40"><img src="http://demo-opencart.ru/image/cache/catalog/demo/iphone_1-200x200.jpg" alt="iPhone" title="iPhone" class="img-responsive" /></a></div>
+                        <div class="image"><a href="http://demo-opencart.ru/index.php?route=product/product&amp;product_id=40"><img src="http://static.trial.ru/cache/products/iphone_1-200x200.jpg" alt="iPhone" title="iPhone" class="img-responsive" /></a></div>
                         <div class="caption">
                             <h4><a href="http://demo-opencart.ru/index.php?route=product/product&amp;product_id=40">iPhone</a></h4>
                             <p>
@@ -251,7 +251,7 @@ AppAsset::register($this);
                 </div>
                 <div class="product-layout col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="product-thumb transition">
-                        <div class="image"><a href="http://demo-opencart.ru/index.php?route=product/product&amp;product_id=42"><img src="http://demo-opencart.ru/image/cache/catalog/demo/apple_cinema_30-200x200.jpg" alt="Apple Cinema 30&quot;" title="Apple Cinema 30&quot;" class="img-responsive" /></a></div>
+                        <div class="image"><a href="http://demo-opencart.ru/index.php?route=product/product&amp;product_id=42"><img src="http://static.trial.ru/cache/products/apple_cinema_30-200x200.jpg" alt="Apple Cinema 30&quot;" title="Apple Cinema 30&quot;" class="img-responsive" /></a></div>
                         <div class="caption">
                             <h4><a href="http://demo-opencart.ru/index.php?route=product/product&amp;product_id=42">Apple Cinema 30&quot;</a></h4>
                             <p>
@@ -270,7 +270,7 @@ AppAsset::register($this);
                 </div>
                 <div class="product-layout col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="product-thumb transition">
-                        <div class="image"><a href="http://demo-opencart.ru/index.php?route=product/product&amp;product_id=30"><img src="http://demo-opencart.ru/image/cache/catalog/demo/canon_eos_5d_1-200x200.jpg" alt="Canon EOS 5D" title="Canon EOS 5D" class="img-responsive" /></a></div>
+                        <div class="image"><a href="http://demo-opencart.ru/index.php?route=product/product&amp;product_id=30"><img src="http://static.trial.ru/cache/products/canon_eos_5d_1-200x200.jpg" alt="Canon EOS 5D" title="Canon EOS 5D" class="img-responsive" /></a></div>
                         <div class="caption">
                             <h4><a href="http://demo-opencart.ru/index.php?route=product/product&amp;product_id=30">Canon EOS 5D</a></h4>
                             <p>
@@ -291,17 +291,17 @@ AppAsset::register($this);
 
             <div class="swiper-viewport">
                 <div id="carousel0" class="swiper-container">
-                    <div class="swiper-wrapper">      <div class="swiper-slide text-center"><img src="http://demo-opencart.ru/image/cache/catalog/demo/manufacturer/nfl-130x100.png" alt="NFL" class="img-responsive" /></div>
-                        <div class="swiper-slide text-center"><img src="http://demo-opencart.ru/image/cache/catalog/demo/manufacturer/redbull-130x100.png" alt="RedBull" class="img-responsive" /></div>
-                        <div class="swiper-slide text-center"><img src="http://demo-opencart.ru/image/cache/catalog/demo/manufacturer/sony-130x100.png" alt="Sony" class="img-responsive" /></div>
-                        <div class="swiper-slide text-center"><img src="http://demo-opencart.ru/image/cache/catalog/demo/manufacturer/cocacola-130x100.png" alt="Coca Cola" class="img-responsive" /></div>
-                        <div class="swiper-slide text-center"><img src="http://demo-opencart.ru/image/cache/catalog/demo/manufacturer/burgerking-130x100.png" alt="Burger King" class="img-responsive" /></div>
-                        <div class="swiper-slide text-center"><img src="http://demo-opencart.ru/image/cache/catalog/demo/manufacturer/canon-130x100.png" alt="Canon" class="img-responsive" /></div>
-                        <div class="swiper-slide text-center"><img src="http://demo-opencart.ru/image/cache/catalog/demo/manufacturer/harley-130x100.png" alt="Harley Davidson" class="img-responsive" /></div>
-                        <div class="swiper-slide text-center"><img src="http://demo-opencart.ru/image/cache/catalog/demo/manufacturer/dell-130x100.png" alt="Dell" class="img-responsive" /></div>
-                        <div class="swiper-slide text-center"><img src="http://demo-opencart.ru/image/cache/catalog/demo/manufacturer/disney-130x100.png" alt="Disney" class="img-responsive" /></div>
-                        <div class="swiper-slide text-center"><img src="http://demo-opencart.ru/image/cache/catalog/demo/manufacturer/starbucks-130x100.png" alt="Starbucks" class="img-responsive" /></div>
-                        <div class="swiper-slide text-center"><img src="http://demo-opencart.ru/image/cache/catalog/demo/manufacturer/nintendo-130x100.png" alt="Nintendo" class="img-responsive" /></div>
+                    <div class="swiper-wrapper">      <div class="swiper-slide text-center"><img src="http://static.trial.ru/cache/manufacturers/nfl-130x100.png" alt="NFL" class="img-responsive" /></div>
+                        <div class="swiper-slide text-center"><img src="http://static.trial.ru/cache/manufacturers/redbull-130x100.png" alt="RedBull" class="img-responsive" /></div>
+                        <div class="swiper-slide text-center"><img src="http://static.trial.ru/cache/manufacturers/sony-130x100.png" alt="Sony" class="img-responsive" /></div>
+                        <div class="swiper-slide text-center"><img src="http://static.trial.ru/cache/manufacturers/cocacola-130x100.png" alt="Coca Cola" class="img-responsive" /></div>
+                        <div class="swiper-slide text-center"><img src="http://static.trial.ru/cache/manufacturers/burgerking-130x100.png" alt="Burger King" class="img-responsive" /></div>
+                        <div class="swiper-slide text-center"><img src="http://static.trial.ru/cache/manufacturers/canon-130x100.png" alt="Canon" class="img-responsive" /></div>
+                        <div class="swiper-slide text-center"><img src="http://static.trial.ru/cache/manufacturers/harley-130x100.png" alt="Harley Davidson" class="img-responsive" /></div>
+                        <div class="swiper-slide text-center"><img src="http://static.trial.ru/cache/manufacturers/dell-130x100.png" alt="Dell" class="img-responsive" /></div>
+                        <div class="swiper-slide text-center"><img src="http://static.trial.ru/cache/manufacturers/disney-130x100.png" alt="Disney" class="img-responsive" /></div>
+                        <div class="swiper-slide text-center"><img src="http://static.trial.ru/cache/manufacturers/starbucks-130x100.png" alt="Starbucks" class="img-responsive" /></div>
+                        <div class="swiper-slide text-center"><img src="http://static.trial.ru/cache/manufacturers/nintendo-130x100.png" alt="Nintendo" class="img-responsive" /></div>
                     </div>
                 </div>
                 <div class="swiper-pagination carousel0"></div>
