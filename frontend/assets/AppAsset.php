@@ -21,7 +21,6 @@ class AppAsset extends AssetBundle
     ];
     public $depends = [
         'frontend\assets\FontAwesomeAsset',
-        'frontend\assets\SwiperAsset',
         'yii\web\YiiAsset',
         'frontend\assets\BootstrapAssetWithJs',
     ];

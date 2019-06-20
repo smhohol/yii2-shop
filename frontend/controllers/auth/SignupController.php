@@ -2,6 +2,7 @@
 namespace frontend\controllers\auth;
 
 use DomainException;
+use RuntimeException;
 use shop\forms\auth\ResendVerificationEmailForm;
 use shop\services\auth\SignupService;
 use shop\services\auth\VerifyEmailService;
@@ -15,6 +16,8 @@ use shop\forms\auth\SignupForm;
 
 class SignupController extends Controller
 {
+    public $layout = 'cabinet';
+
     private $signupService;
     private $verifyEmailService;
 
@@ -59,7 +62,7 @@ class SignupController extends Controller
                 Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
 
                 return $this->goHome();
-            } catch (\RuntimeException $e) {
+            } catch (RuntimeException $e) {
                 Yii::$app->errorHandler->logException($e);
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
