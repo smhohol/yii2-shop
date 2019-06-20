@@ -82,8 +82,13 @@ AppAsset::register($this);
                 <li><a href="http://demo-opencart.ru/index.php?route=information/contact"><i class="fa fa-phone"></i></a> <span class="hidden-xs hidden-sm hidden-md">123456789</span></li>
                 <li class="dropdown"><a href="http://demo-opencart.ru/index.php?route=account/account" title="Личный кабинет" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span class="hidden-xs hidden-sm hidden-md">Личный кабинет</span> <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="http://demo-opencart.ru/index.php?route=account/register">Регистрация</a></li>
-                        <li><a href="http://demo-opencart.ru/index.php?route=account/login">Авторизация</a></li>
+                        <?php if (Yii::$app->user->isGuest): ?>
+                            <li><a href="<?= Html::encode(Url::to(['/auth/auth/login'])) ?>">Login</a></li>
+                            <li><a href="<?= Html::encode(Url::to(['/auth/signup/request'])) ?>">Signup</a></li>
+                        <?php else: ?>
+                            <li><a href="<?= Html::encode(Url::to(['/auth/auth/logout'])) ?>" data-method="post">Logout</a></li>
+                            <li><a href="<?= Html::encode(Url::to(['/cabinet/default/index'])) ?>">Cabinet</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
                 <li><a href="http://demo-opencart.ru/index.php?route=account/wishlist" id="wishlist-total" title="Закладки (0)"><i class="fa fa-heart"></i> <span class="hidden-xs hidden-sm hidden-md">Закладки (0)</span></a></li>
@@ -126,28 +131,13 @@ AppAsset::register($this);
             'id' => 'menu',
         ],
     ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/contact/index']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/auth/signup/request']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/auth/auth/login']];
-    } else {
-        $menuItems[] = ['label' => 'Cabinet', 'url' => ['/cabinet/default/index']];
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/auth/auth/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->id . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
     echo Nav::widget([
         'options' => ['class' => 'nav navbar-nav'],
-        'items' => $menuItems,
+        'items' => [
+            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'Contact', 'url' => ['/contact/index']],
+        ],
     ]);
     NavBar::end();
     ?>
