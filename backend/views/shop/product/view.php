@@ -4,6 +4,7 @@ use kartik\file\FileInput;
 use shop\entities\Shop\Product\Modification;
 use shop\entities\Shop\Product\Value;
 use shop\helpers\PriceHelper;
+use shop\helpers\ProductHelper;
 use yii\bootstrap\ActiveForm;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
@@ -24,6 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="user-view">
 
     <p>
+        <?php if ($product->isActive()): ?>
+            <?= Html::a('Draft', ['draft', 'id' => $product->id], ['class' => 'btn btn-primary', 'data-method' => 'post']) ?>
+        <?php else: ?>
+            <?= Html::a('Activate', ['activate', 'id' => $product->id], ['class' => 'btn btn-success', 'data-method' => 'post']) ?>
+        <?php endif; ?>
         <?= Html::a('Update', ['update', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $product->id], [
             'class' => 'btn btn-danger',
@@ -43,6 +49,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         'model' => $product,
                         'attributes' => [
                             'id',
+                            [
+                                'attribute' => 'status',
+                                'value' => ProductHelper::statusLabel($product->status),
+                                'format' => 'raw',
+                            ],
                             [
                                 'attribute' => 'brand_id',
                                 'value' => ArrayHelper::getValue($product, 'brand.name'),
