@@ -69,6 +69,16 @@ class Category extends ActiveRecord
         ];
     }
 
+    public function getSeoTitle(): string
+    {
+        return $this->meta->title ?: $this->getHeadingTitle();
+    }
+
+    public function getHeadingTitle(): string
+    {
+        return $this->title ?: $this->name;
+    }
+
     public static function find(): CategoryQuery
     {
         return new CategoryQuery(static::class);
