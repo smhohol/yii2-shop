@@ -78,6 +78,11 @@ class Product extends ActiveRecord
         $this->meta = $meta;
     }
 
+    public function getSeoTitle(): string
+    {
+        return $this->meta->title ?: $this->name;
+    }
+
     // Status
     public function activate(): void
     {
