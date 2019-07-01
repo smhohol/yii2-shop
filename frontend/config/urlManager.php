@@ -5,6 +5,7 @@ return [
     'hostInfo' => $params['frontendHostInfo'],
     'enablePrettyUrl' => true,
     'showScriptName' => false,
+    'cache' => false,
     'rules' => [
         '' => 'site/index',
         'about' => 'site/about',
@@ -16,6 +17,7 @@ return [
         'reset-password/confirm' => 'auth/reset/confirm',
 
         'catalog' => 'shop/catalog/index',
+        ['class' => 'frontend\urls\CategoryUrlRule'],
         'catalog/<id:\d+>' => 'shop/catalog/product',
 
         'cabinet' => 'cabinet/default/index',
