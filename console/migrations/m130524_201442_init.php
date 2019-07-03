@@ -24,6 +24,21 @@ class m130524_201442_init extends Migration
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
+
+        /* create user admin/qwerty */
+        $time = time();
+        $this->insert('{{%user}}', [
+            'id' => 1,
+            'username' => 'admin',
+            'auth_key' => 'ifkWdyRUuhsJyw_h4YYJy8FwlBz3YOqg',
+            'password_hash' => '$2y$13$dJ/kSM3inrKBpQZtaczdwei/sb39t4PAAycsoKFc0iAaJSnfpjH/C',
+            'password_reset_token' => null,
+            'email' => 'admin@email.ru',
+
+            'status' => 10,
+            'created_at' => $time,
+            'updated_at' => $time,
+        ]);
     }
 
     public function down()
